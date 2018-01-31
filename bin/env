@@ -1,0 +1,2 @@
+SCRIPT_PATH=$(dirname `PWD`)
+HOMEBREW_PATH=/usr/local/Homebrew_tmp

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+. ./env
+
+echo $SCRIPT_PATH
+
+VIMRC_PATH="${HOME}/.vimrc"
+VIM_PATH="${HOME}/.vim"
+VIM_BUNDLE_PATH="${VIM_PATH}/bundle"
+TMP_PATH="./tmp"
+
+echo "Configuring Vim.."
+
+if [ ! -d "${VIM_PATH}" ]; then
+  echo "- Creating ${VIM_PATH}.."
+  mkdir ${VIM_PATH}
+fi
+
+if [ ! -d "${VIM_BUNDLE_PATH}" ]; then
+  echo "- Creating ${VIM_BUNDLE_PATH}.."
+  mkdir ${VIM_BUNDLE_PATH}
+fi
+
+if [ ! -f "${VIMRC_PATH}" ]; then
+  echo "- Linking ${VIMRC_PATH}.."
+  cp ${SCRIPT_PATH}/.vimrc ${VIMRC_PATH}
+fi
+
+echo "Configuring VIM plugins.."
+
+if [ ! -d "${TMP_PATH}" ]; then
+  mkdir ./tmp
+fi
+
+if [ ! -d ${VIM_PATH}/autoload ]; then
+  echo "- Installing Pathogen.."
+  git clone https://github.com/tpope/vim-pathogen.git ${TMP_PATH} > /dev/null
+  mv ${TMP_PATH}/autoload ${VIM_PATH} 
+fi
+
+if [ ! -d "${VIM_BUNDLE_PATH}/nerdtree" ]; then
+  echo "- Installing nerdtree.."
+  git clone https://github.com/scrooloose/nerdtree.git ${VIM_BUNDLE_PATH}/nerdtree > /dev/null
+fi
+
+if [ ! -d "${VIM_BUNDLE_PATH}/airline" ]; then
+  echo "- Installing Airline.."
+  git clone https://github.com/vim-airline/vim-airline ${VIM_BUNDLE_PATH}/airline > /dev/null
+fi
+
+if [ ! -d "${VIM_BUNDLE_PATH}/vim-terraform" ]; then
+  echo "- Installing vim-terraform.."
+  git clone https://github.com/hashivim/vim-terraform.git ${VIM_BUNDLE_PATH}/vim-terraform > /dev/null
+fi
+
+echo "Cleaning up.."
+rm -Rf ${TMP_PATH}

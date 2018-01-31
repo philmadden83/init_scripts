@@ -1,0 +1,30 @@
+#!/bin/bash
+
+. ./env
+
+# Ensure Homebrew is installed
+if [ `which brew > /dev/null; echo $?` -eq 1 ]; then
+  echo "Installing Homebrew.."
+  if [ ! -d "${HOMEBREW_PATH}" ]; then
+    mkdir ${HOMEBREW_PATH}
+  fi
+  curl -Ls https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ${HOMEBREW_PATH}
+  ln -snf ${HOMEBREW_PATH}/bin/brew /usr/local/bin/brew
+fi
+
+# Ensure Ruby is installed
+if [ `which ruby > /dev/null; echo $?` -eq 1 ]; then
+  echo "Installing ruby..sorry.."
+  brew install ruby
+fi
+
+
+#========================================
+# Terraform stuff
+#========================================
+
+# Ensure terraform is installed
+if [ `which terraform > /dev/null; echo $?` -eq 1 ]; then
+  curl -Ls https://releases.hashicorp.com/terraform/0.11.2/terraform_0.11.2_darwin_amd64.zip
+fi
+
